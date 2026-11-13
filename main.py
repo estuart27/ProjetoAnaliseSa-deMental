@@ -3,6 +3,7 @@ import secrets
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from telegram import Update
 
@@ -55,12 +56,18 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Tracking Pessoal", lifespan=lifespan, docs_url=None, redoc_url=None)
 
+app.mount("/static", StaticFiles(directory=config.BASE_DIR / "static"), name="static")
+
 
 def _checar_chave(key: str):
     if not config.DASHBOARD_KEY:
         raise HTTPException(503, "Defina DASHBOARD_KEY no .env")
     if not secrets.compare_digest(key.encode(), config.DASHBOARD_KEY.encode()):
         raise HTTPException(401, "Chave inválida")
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse(config.BASE_DIR / "static" / "favicon.ico")
 
 
 @app.get("/health")
