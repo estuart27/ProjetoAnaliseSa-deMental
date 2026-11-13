@@ -1,0 +1,16 @@
+# Web / API
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+
+# Telegram (versão async)
+python-telegram-bot>=21.6,<23.0
+
+# Agendador (use a v3; a v4 tem API diferente)
+APScheduler>=3.10,<4.0
+
+# IA (Gemini)
+google-genai>=1.0
+
+# Utilitários
+python-dotenv>=1.0
+tzdata>=2024.1   # necessário para fuso horário no Windows
