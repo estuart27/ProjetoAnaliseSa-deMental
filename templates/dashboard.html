@@ -6,7 +6,6 @@
 <title>Saúde Mental</title>
 <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/static/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
@@ -14,14 +13,14 @@
   :root {
     --bg: #1c2740; --card: rgba(255,255,255,.06); --line: rgba(255,255,255,.11);
     --ink: #f2f5fb; --muted: #9fb0cc;
-    --laranja: #f47b30; --verde: #22d3a5; --roxo: #a63fc0; --vermelho: #f23d55; --amarelo: #ffc233;
+    --laranja: #f47b30; --verde: #22d3a5; --roxo: #a63fc0; --vermelho: #f23d55; --amarelo: #ffc233; --azul: #5aa9ff;
   }
   * { box-sizing: border-box; }
   body { margin: 0; min-height: 100vh; color: var(--ink); background: var(--bg);
     background-image: radial-gradient(1100px 650px at 8% -8%, #3c4e74 0%, transparent 60%),
                       radial-gradient(900px 600px at 100% 100%, #2a3358 0%, transparent 60%);
     font: 16px/1.5 "Nunito", system-ui, sans-serif; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 26px 18px 80px; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 26px 18px 80px; }
   h1, h2, h3, .tit { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; text-transform: uppercase;
     letter-spacing: .02em; margin: 0; font-weight: 700; }
   h1 { font-size: 2.6rem; line-height: 1; }
@@ -30,22 +29,21 @@
   header { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
   header p { margin: 6px 0 0; color: var(--muted); }
   .toggle { display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line); padding: 5px; border-radius: 999px; }
-  button { font: inherit; color: inherit; cursor: pointer; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
   .toggle button { border: 0; background: none; padding: 6px 16px; border-radius: 999px; font-weight: 800; color: var(--muted); transition: .2s; }
   .toggle button.on { background: var(--laranja); color: #fff; }
   .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
   .painel { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
-  .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s12 { grid-column: span 12; }
+  .s5 { grid-column: span 5; } .s6 { grid-column: span 6; } .s7 { grid-column: span 7; } .s12 { grid-column: span 12; }
   .s3 { grid-column: span 3; }
-  @media (max-width: 900px) { .s5, .s7, .s3 { grid-column: span 12; } .s3 { grid-column: span 6; } }
+  @media (max-width: 900px) { .s5, .s6, .s7, .s3 { grid-column: span 12; } .s3 { grid-column: span 6; } }
   @media (max-width: 520px) { .s3 { grid-column: span 12; } h1 { font-size: 2.1rem; } }
 
-  /* ---------- Cérebro ---------- */
   .brain-box { --brain: #8e9cb8; text-align: center; }
   .brain-box[data-estado="ruim"]  { --brain: #f23d55; }
   .brain-box[data-estado="medio"] { --brain: #f47b30; }
   .brain-box[data-estado="bom"]   { --brain: #22d3a5; }
-  .brain-box svg { width: min(100%, 290px); height: auto; overflow: visible; display: block; margin: 0 auto; }
   .brain-fill { fill: var(--brain); transition: fill .5s; }
   .halo { fill: var(--brain); opacity: .14; transform-box: fill-box; transform-origin: center; animation: pulso 2.6s ease-in-out infinite; }
   .corpo { transform-origin: 120px 205px; }
@@ -54,89 +52,78 @@
   [data-estado="medio"] .f-medio, [data-estado="medio"] .x-medio,
   [data-estado="vazio"] .f-medio,
   [data-estado="bom"] .f-bom, [data-estado="bom"] .x-bom { display: inline; }
-  [data-estado="ruim"] .corpo  { animation: tremer 1.7s ease-in-out infinite; }
-  [data-estado="medio"] .corpo { animation: balancar 3.4s ease-in-out infinite; }
-  [data-estado="bom"] .corpo   { animation: pular 1.1s ease-in-out infinite; }
-  .lagrima { animation: lagrima 1.9s ease-in infinite; }
-  .lagrima.b { animation-delay: .8s; }
-  .chuva { animation: chuva .9s linear infinite; }
-  .raio { animation: raio 2.6s infinite; }
-  .blink { transform-box: fill-box; transform-origin: center; animation: piscar 4.2s infinite; }
-  .spark { transform-box: fill-box; transform-origin: center; animation: brilhar 1.7s ease-in-out infinite; }
-  .pensa circle { animation: subir 2.2s ease-in-out infinite; }
-  .pensa circle:nth-child(2) { animation-delay: .3s; } .pensa circle:nth-child(3) { animation-delay: .6s; }
   @keyframes pulso { 50% { transform: scale(1.09); } }
-  @keyframes tremer { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-1.4deg) translate(-1px,1px); }
-    40% { transform: rotate(1.2deg); } 60% { transform: rotate(-.8deg) translate(1px,1px); } 80% { transform: rotate(.9deg); } }
-  @keyframes balancar { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
-  @keyframes pular { 0%,100% { transform: translateY(0) scale(1.02,.97); } 50% { transform: translateY(-12px) scale(.99,1.02); } }
-  @keyframes lagrima { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(36px); opacity: 0; } }
-  @keyframes chuva { 0% { transform: translateY(-4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(12px); opacity: 0; } }
-  @keyframes raio { 0%,86%,100% { opacity: .15; } 88%,92% { opacity: 1; } 90% { opacity: .3; } }
-  @keyframes piscar { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
-  @keyframes brilhar { 0%,100% { transform: scale(.3) rotate(0); opacity: .2; } 50% { transform: scale(1) rotate(25deg); opacity: 1; } }
-  @keyframes subir { 0%,100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(-5px); opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
-  .score { font-family: "Barlow Condensed", sans-serif; font-size: 3.6rem; line-height: 1; font-weight: 700; margin-top: 6px; color: var(--brain); }
-  .estado { font-family: "Barlow Condensed", sans-serif; font-size: 1.5rem; text-transform: uppercase; font-weight: 700; }
-  .msg { color: var(--muted); max-width: 34ch; margin: 6px auto 14px; min-height: 3em; }
+  .score { font-family: "Barlow Condensed", sans-serif; font-size: 3.5rem; line-height: 1; font-weight: 700; margin-top: 6px; color: var(--brain); }
+  .estado { font-family: "Barlow Condensed", sans-serif; font-size: 1.45rem; text-transform: uppercase; font-weight: 700; }
+  .msg { color: var(--muted); max-width: 34ch; margin: 6px auto 12px; min-height: 2.8em; font-size: .92rem; }
   .faixas { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
   .faixa { padding: 3px 12px; border-radius: 999px; font-size: .8rem; font-weight: 800; background: var(--card); border: 1px solid var(--line); color: var(--muted); opacity: .55; }
   .brain-box[data-estado="ruim"] .faixa.ruim { background: var(--vermelho); color: #fff; opacity: 1; }
   .brain-box[data-estado="medio"] .faixa.medio { background: var(--laranja); color: #fff; opacity: 1; }
   .brain-box[data-estado="bom"] .faixa.bom { background: var(--verde); color: #10332a; opacity: 1; }
-  .previa { margin-top: 14px; font-size: .8rem; color: var(--muted); }
-  .previa button { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 2px 10px; margin: 0 2px; font-size: 1rem; }
+  .previa { margin-top: 12px; font-size: .8rem; color: var(--muted); }
+  .previa button { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 2px 10px; margin: 0 2px; }
   .previa button.on { border-color: #fff; }
-  .nota { font-size: .75rem; color: var(--muted); margin-top: 10px; }
+  .nota { font-size: .75rem; color: var(--muted); margin-top: 8px; }
 
-  /* ---------- Barras com ponta de seta ---------- */
-  .hb { display: grid; grid-template-columns: 46px 1fr 64px; align-items: center; gap: 12px; margin-bottom: 18px; }
-  .hb .ic { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--c); border: 3px solid rgba(255,255,255,.25); }
-  .hb .trilho { height: 40px; }
-  .hb .barra { height: 100%; width: 0; background: var(--c); min-width: 70px; display: flex; align-items: center; padding-left: 16px; font-weight: 800;
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); transition: width 1s cubic-bezier(.2,.8,.2,1); }
+  .hb { display: grid; grid-template-columns: 42px 1fr 58px; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .hb .ic { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-size: 1.15rem; background: var(--c); border: 2px solid rgba(255,255,255,.25); }
+  .hb .trilho { height: 34px; }
+  .hb .barra { height: 100%; width: 0; background: var(--c); min-width: 70px; display: flex; align-items: center; padding-left: 14px; font-weight: 800; font-size: .9rem;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%); transition: width 1s cubic-bezier(.2,.8,.2,1); }
   .hb .barra span { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.25); white-space: nowrap; }
-  .hb b { font-family: "Barlow Condensed", sans-serif; font-size: 1.7rem; text-align: right; }
-  .legenda { color: var(--muted); font-size: .8rem; margin: -4px 0 0; }
+  .hb b { font-family: "Barlow Condensed", sans-serif; font-size: 1.5rem; text-align: right; }
+  .legenda { color: var(--muted); font-size: .8rem; margin: 6px 0 0; }
 
-  /* ---------- Gráficos ---------- */
-  .grafico { position: relative; height: 320px; }
-  .grafico.sm { height: 260px; }
+  .grafico { position: relative; height: 290px; }
+  .grafico.sm { height: 250px; }
 
-  /* ---------- Faixa de dias + detalhe ---------- */
-  .tira { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-  .dia { width: 38px; height: 38px; border-radius: 10px; border: 2px solid transparent; font-weight: 800; background: rgba(255,255,255,.08); color: var(--muted); transition: transform .15s; }
-  .dia:hover { transform: translateY(-3px); }
+  .prog-bg { height: 15px; background: rgba(255,255,255,.08); border-radius: 999px; overflow: hidden; border: 1px solid var(--line); margin: 10px 0; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--verde), var(--azul)); width: 0; transition: width 1s ease; }
+  .marcos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .marco { text-align: center; padding: 8px 4px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: .78rem; color: var(--muted); }
+  .marco.ok { background: rgba(34,211,165,.18); border-color: var(--verde); color: var(--ink); font-weight: 800; }
+  .marco.atual { border-color: var(--amarelo); color: var(--amarelo); }
+  .marco b { display: block; font-family: "Barlow Condensed", sans-serif; font-size: 1.15rem; }
+  @media (max-width: 600px) { .marcos { grid-template-columns: repeat(3, 1fr); } }
+
+  .timeline { display: flex; flex-direction: column; gap: 10px; max-height: 320px; overflow-y: auto; }
+  .tl-item { background: rgba(255,255,255,.04); border-left: 3px solid var(--c, var(--verde)); border-radius: 10px; padding: 10px 12px; }
+  .tl-data { font-size: .76rem; font-weight: 800; color: var(--muted); }
+  .tl-txt { margin: 2px 0 0; font-size: .92rem; }
+
+  .form-lemb { display: grid; grid-template-columns: 2fr 1.1fr 1.1fr 1.1fr .9fr auto; gap: 8px; margin-bottom: 14px; }
+  @media (max-width: 900px) { .form-lemb { grid-template-columns: 1fr 1fr; } }
+  .form-lemb input, .form-lemb select { background: rgba(0,0,0,.28); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--ink); }
+  .btn-add { background: var(--verde); color: #10332a; border: 0; border-radius: 10px; padding: 8px 14px; font-weight: 800; }
+  .lemb-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line); margin-bottom: 8px; }
+  .lemb-tag { font-size: .75rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,.1); margin-right: 6px; }
+  .lemb-btn { background: rgba(255,255,255,.08); border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; font-size: .8rem; font-weight: 800; margin-left: 6px; }
+  .lemb-del { background: rgba(242,61,85,.2); color: #ff8fa3; border-color: rgba(242,61,85,.4); }
+
+  .tira { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .dia { width: 38px; height: 38px; border-radius: 10px; border: 2px solid transparent; font-weight: 800; background: rgba(255,255,255,.08); color: var(--muted); }
   .dia.ruim { background: var(--vermelho); color: #fff; } .dia.medio { background: var(--laranja); color: #fff; } .dia.bom { background: var(--verde); color: #10332a; }
-  .dia.sel { border-color: #fff; transform: translateY(-3px); }
-  .det-topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-  .det-topo h3 { font-size: 1.5rem; }
-  .badge { padding: 2px 12px; border-radius: 999px; font-weight: 800; font-size: .85rem; background: rgba(255,255,255,.1); }
-  .badge.ruim { background: var(--vermelho); } .badge.medio { background: var(--laranja); } .badge.bom { background: var(--verde); color: #10332a; }
+  .dia.sel { border-color: #fff; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-  .chip { padding: 4px 12px; border-radius: 999px; font-size: .85rem; font-weight: 800; border: 2px solid var(--c, var(--line)); }
+  .chip { padding: 4px 12px; border-radius: 999px; font-size: .84rem; font-weight: 800; border: 2px solid var(--c, var(--line)); }
   .alerta { margin: 8px 0; color: var(--amarelo); font-weight: 600; }
   blockquote { margin: 10px 0 0; padding: 4px 0 4px 14px; border-left: 3px solid var(--roxo); color: #dfe7f7; white-space: pre-wrap; }
 
-  /* ---------- Triângulos (hábitos) ---------- */
-  .tris { display: flex; justify-content: space-around; align-items: flex-end; height: 250px; border-left: 3px solid #fff; border-bottom: 3px solid #fff; padding: 0 8px; }
-  .tri { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; max-width: 90px; }
+  .tris { display: flex; justify-content: space-around; align-items: flex-end; height: 220px; border-left: 3px solid #fff; border-bottom: 3px solid #fff; padding: 0 8px; }
+  .tri { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; max-width: 82px; }
   .tri .alt { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; transition: height 1s cubic-bezier(.2,.8,.2,1); height: 0; }
-  .tri .ponto { width: 14px; height: 14px; border-radius: 50%; background: var(--c); border: 2px solid #fff; margin-bottom: 4px; }
-  .tri .forma { width: 100%; flex: 1; background: var(--c); clip-path: polygon(50% 0, 100% 100%, 0 100%); transition: transform .2s, filter .2s; transform-origin: bottom; }
-  .tri:hover .forma { transform: scaleY(1.04) scaleX(1.12); filter: brightness(1.12); }
-  .tri .pct { position: absolute; bottom: 6px; font-weight: 800; font-size: .85rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
-  .tris-leg { display: flex; justify-content: space-around; padding: 6px 8px 0; font-size: .8rem; color: var(--muted); text-align: center; }
-  .tris-leg span { flex: 1; max-width: 90px; }
+  .tri .ponto { width: 13px; height: 13px; border-radius: 50%; background: var(--c); border: 2px solid #fff; margin-bottom: 4px; }
+  .tri .forma { width: 100%; flex: 1; background: var(--c); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .tri .pct { position: absolute; bottom: 6px; font-weight: 800; font-size: .82rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+  .tris-leg { display: flex; justify-content: space-around; padding: 6px 8px 0; font-size: .78rem; color: var(--muted); text-align: center; }
+  .tris-leg span { flex: 1; max-width: 82px; }
 
-  /* ---------- Cartões brancos ---------- */
   .cartao { background: #fff; color: #263149; border-radius: 16px; padding: 14px 16px 16px; border-bottom: 5px solid var(--c); }
-  .cartao .pill { display: inline-block; background: var(--c); color: #fff; font-family: "Barlow Condensed", sans-serif; text-transform: uppercase; font-weight: 700; padding: 1px 14px; border-radius: 999px; margin-bottom: 10px; }
-  .cartao .num { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 2.3rem; line-height: 1.05; color: var(--c); }
-  .cartao p { margin: 4px 0 0; font-size: .85rem; color: #5a6781; }
-
+  .cartao .pill { display: inline-block; background: var(--c); color: #fff; font-family: "Barlow Condensed", sans-serif; text-transform: uppercase; font-weight: 700; padding: 1px 14px; border-radius: 999px; margin-bottom: 8px; }
+  .cartao .num { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1.05; color: var(--c); }
+  .cartao p { margin: 4px 0 0; font-size: .84rem; color: #5a6781; }
   #erro { color: var(--vermelho); font-weight: 800; }
   #erro[hidden] { display: none; }
 </style>
@@ -158,186 +145,192 @@
     <section class="painel s5">
       <span class="tit" style="--c:var(--laranja)">Como estou</span>
       <div class="brain-box" id="brainBox" data-estado="vazio">
-        <svg viewBox="0 0 240 230" role="img" aria-label="Cérebro que muda de expressão conforme sua saúde mental">
-          <defs>
-            <g id="bs">
-              <circle cx="70" cy="70" r="30"/><circle cx="110" cy="55" r="32"/><circle cx="150" cy="70" r="30"/>
-              <circle cx="50" cy="100" r="28"/><circle cx="170" cy="100" r="28"/>
-              <circle cx="75" cy="118" r="30"/><circle cx="145" cy="118" r="30"/><circle cx="110" cy="108" r="36"/>
-              <circle cx="90" cy="142" r="24"/><circle cx="130" cy="142" r="24"/>
-              <rect x="100" y="150" width="20" height="26" rx="9"/>
-            </g>
-          </defs>
-          <circle class="halo" cx="120" cy="125" r="100"/>
-
-          <g class="extra x-ruim" transform="translate(14 4)">
-            <g fill="#5d6b8a"><circle cx="22" cy="24" r="12"/><circle cx="38" cy="18" r="14"/><circle cx="54" cy="25" r="11"/><rect x="14" y="24" width="48" height="12" rx="6"/></g>
-            <path class="raio" d="M36 32 L30 46 L38 44 L33 58 L48 40 L40 42 L45 32Z" fill="#ffc233"/>
-            <g stroke="#7cc4ff" stroke-width="2.5" stroke-linecap="round">
-              <line class="chuva" x1="20" y1="42" x2="17" y2="50"/><line class="chuva" style="animation-delay:.3s" x1="56" y1="42" x2="53" y2="50"/>
-              <line class="chuva" style="animation-delay:.6s" x1="38" y1="44" x2="35" y2="52"/>
-            </g>
-          </g>
-          <g class="extra x-medio pensa" fill="#cfd9ee"><circle cx="196" cy="52" r="3.5"/><circle cx="208" cy="38" r="5"/><circle cx="224" cy="20" r="8"/></g>
-          <g class="extra x-bom" fill="#ffd76a">
-            <g transform="translate(26 66)"><path class="spark" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3Z"/></g>
-            <g transform="translate(216 54)"><path class="spark" style="animation-delay:.4s" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3Z"/></g>
-            <g transform="translate(22 172)"><path class="spark" style="animation-delay:.8s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
-            <g transform="translate(220 158)"><path class="spark" style="animation-delay:1.1s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
-            <g transform="translate(120 14)"><path class="spark" style="animation-delay:.6s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
-          </g>
-
-          <g class="corpo">
-            <g transform="translate(10 30)">
-              <use href="#bs" fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
-              <use href="#bs" class="brain-fill"/>
-              <g fill="none" stroke="rgba(0,0,0,.2)" stroke-width="3.5" stroke-linecap="round">
-                <path d="M110 28 C100 48 120 64 110 82"/><path d="M68 55 q16 10 6 26"/><path d="M152 55 q-16 10 -6 26"/>
-                <path d="M52 104 q18 -6 24 10"/><path d="M168 104 q-18 -6 -24 10"/><path d="M92 150 q10 8 18 0 q8 8 18 0"/>
-              </g>
-
-              <g class="face f-ruim">
-                <g transform="rotate(32 150 55)"><rect x="128" y="46" width="44" height="18" rx="9" fill="#f6dcc0" stroke="#d3a577" stroke-width="2"/>
-                  <g fill="#d3a577"><circle cx="143" cy="55" r="1.6"/><circle cx="150" cy="55" r="1.6"/><circle cx="157" cy="55" r="1.6"/></g></g>
-                <g stroke="#2a1b2e" stroke-width="4" stroke-linecap="round" fill="none"><path d="M76 96 L98 88"/><path d="M144 96 L122 88"/><path d="M94 134 Q110 118 126 134" stroke-width="5"/></g>
-                <ellipse cx="88" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/><ellipse cx="132" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/>
-                <circle cx="86" cy="103" r="2" fill="#fff"/><circle cx="130" cy="103" r="2" fill="#fff"/>
-                <path class="lagrima" d="M82 112 C78 118 76 122 82 126 C88 122 86 118 82 112Z" fill="#7cc4ff"/>
-                <path class="lagrima b" d="M138 112 C134 118 132 122 138 126 C144 122 142 118 138 112Z" fill="#7cc4ff"/>
-              </g>
-
-              <g class="face f-medio">
-                <g stroke="#2a1b2e" stroke-width="4" stroke-linecap="round" fill="none"><path d="M78 92 L98 92"/><path d="M122 94 L142 88"/><path d="M96 127 Q103 121 110 127 T124 127" stroke-width="5"/></g>
-                <ellipse class="blink" cx="88" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/><ellipse class="blink" cx="132" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/>
-                <circle cx="86" cy="103" r="2" fill="#fff"/><circle cx="130" cy="103" r="2" fill="#fff"/>
-              </g>
-
-              <g class="face f-bom">
-                <g stroke="#2a1b2e" stroke-width="5" stroke-linecap="round" fill="none"><path d="M79 108 Q88 92 97 108"/><path d="M123 108 Q132 92 141 108"/></g>
-                <circle cx="72" cy="122" r="7" fill="#ff8fa3" opacity=".65"/><circle cx="148" cy="122" r="7" fill="#ff8fa3" opacity=".65"/>
-                <path d="M92 118 Q110 148 128 118 Z" fill="#2a1b2e"/><path d="M101 134 Q110 126 119 134 Q110 143 101 134Z" fill="#ff7a8a"/>
-              </g>
-            </g>
-          </g>
-        </svg>
         <div class="score" id="score">–</div>
         <div class="estado" id="estado">Sem dados</div>
-        <p class="msg" id="msg">Responda seu primeiro check-in no Telegram.</p>
+        <p class="msg" id="msg">Responda seu check-in no Telegram.</p>
         <div class="faixas"><span class="faixa ruim">0–39 pesado</span><span class="faixa medio">40–69 oscilante</span><span class="faixa bom">70–100 leve</span></div>
         <div class="previa" id="previa">Pré-visualizar:
           <button data-e="">real</button><button data-e="ruim">😢</button><button data-e="medio">😐</button><button data-e="bom">😄</button>
         </div>
-        <p class="nota">Média dos últimos 3 dias registrados. Indicador pessoal, não é diagnóstico.</p>
+        <p class="nota">Média dos últimos 3 dias registrados.</p>
       </div>
     </section>
 
     <section class="painel s7">
       <span class="tit" style="--c:var(--verde)">Médias do período</span>
       <div id="barras"></div>
-      <p class="legenda">Nota média ÷ 5. Sono alto é bom; estresse, tristeza e solidão baixos são bons.</p>
+      <p class="legenda">Nota média ÷ 5. Sono alto é positivo; estresse, tristeza, solidão, correria e pressão baixos são positivos.</p>
     </section>
+
+    <div class="cartao s3" style="--c:var(--azul)"><span class="pill">Tempo Sozinho</span><div class="num" id="c1">–</div><p id="c1t"></p></div>
+    <div class="cartao s3" style="--c:var(--laranja)"><span class="pill">Tempo de Tela</span><div class="num" id="c2">–</div><p id="c2t"></p></div>
+    <div class="cartao s3" style="--c:var(--verde)"><span class="pill">Melhor dia</span><div class="num" id="c3">–</div><p id="c3t"></p></div>
+    <div class="cartao s3" style="--c:var(--vermelho)"><span class="pill">Dia mais difícil</span><div class="num" id="c4">–</div><p id="c4t"></p></div>
 
     <section class="painel s12">
       <span class="tit" style="--c:var(--vermelho)">Estresse, sono e tristeza</span>
       <div class="grafico"><canvas id="g1"></canvas></div>
-      <p class="legenda">Toque em um ponto para abrir o dia. Toque na legenda para esconder uma linha.</p>
     </section>
 
-    <section class="painel s12">
+    <section class="painel s6">
+      <span class="tit" style="--c:var(--verde)">Bons hábitos vs. Sintomas (%)</span>
+      <div class="grafico sm"><canvas id="gComp"></canvas></div>
+    </section>
+
+    <section class="painel s6">
+      <span class="tit" style="--c:var(--amarelo)">Correria, pressão social e horas sozinho</span>
+      <div class="grafico sm"><canvas id="gCarga"></canvas></div>
+    </section>
+
+    <section class="painel s7">
+      <span class="tit" style="--c:var(--verde)">Ciclos de Sobriedade (Metas)</span>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;">
+        <div><strong style="font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;color:var(--verde)" id="seqAtual">0 dias</strong> <span class="muted" id="seqMelhor"></span></div>
+        <span class="muted" id="seqMeta"></span>
+      </div>
+      <div class="prog-bg"><div class="prog-fill" id="seqProg"></div></div>
+      <div class="marcos" id="marcos"></div>
+    </section>
+
+    <section class="painel s5">
+      <span class="tit" style="--c:var(--roxo)">Bons Hábitos (% dos dias)</span>
+      <div class="tris" id="tris"></div>
+      <div class="tris-leg" id="trisLeg"></div>
+    </section>
+
+    <section class="painel s7">
       <span class="tit" style="--c:var(--roxo)">Dia a dia</span>
       <div class="tira" id="tira"></div>
       <div id="detalhe"></div>
     </section>
 
-    <section class="painel s7">
-      <span class="tit" style="--c:var(--laranja)">Solidão e alimentação</span>
-      <div class="grafico sm"><canvas id="g2"></canvas></div>
-    </section>
-
     <section class="painel s5">
-      <span class="tit" style="--c:var(--verde)">Hábitos (% dos dias)</span>
-      <div class="tris" id="tris"></div>
-      <div class="tris-leg" id="trisLeg"></div>
+      <span class="tit" style="--c:var(--amarelo)">Linha do tempo</span>
+      <div class="timeline" id="timeline"></div>
     </section>
 
-    <div class="cartao s3" style="--c:var(--laranja)"><span class="pill">Tela</span><div class="num" id="c1">–</div><p id="c1t"></p></div>
-    <div class="cartao s3" style="--c:var(--verde)"><span class="pill">Sequência</span><div class="num" id="c2">–</div><p id="c2t"></p></div>
-    <div class="cartao s3" style="--c:var(--roxo)"><span class="pill">Melhor dia</span><div class="num" id="c3">–</div><p id="c3t"></p></div>
-    <div class="cartao s3" style="--c:var(--vermelho)"><span class="pill">Dia mais difícil</span><div class="num" id="c4">–</div><p id="c4t"></p></div>
+    <section class="painel s12">
+      <span class="tit" style="--c:var(--azul)">Lembretes & Dia do Hobby (Telegram)</span>
+      <form class="form-lemb" id="formLemb">
+        <input type="text" id="lTitulo" placeholder="Ex: Corrida, Meditação, Versículo, Dia do Hobby..." required>
+        <select id="lCat">
+          <option value="geral">⏰ Geral</option>
+          <option value="versiculo">📖 Versículo</option>
+          <option value="meditacao">🧘 Meditação</option>
+          <option value="terapia">💬 Terapia</option>
+          <option value="exercicio">🏃 Exercício</option>
+          <option value="estudo">📚 Estudo</option>
+          <option value="hobby">🎨 Dia do Hobby</option>
+        </select>
+        <select id="lTipo">
+          <option value="diario">Diário</option>
+          <option value="semanal">Semanal</option>
+        </select>
+        <select id="lDias">
+          <option value="">Todos os dias</option>
+          <option value="mon,wed,fri">Seg / Qua / Sex</option>
+          <option value="tue,thu">Ter / Qui</option>
+          <option value="sat">Sábado</option>
+          <option value="sun">Domingo</option>
+        </select>
+        <input type="time" id="lHora" value="08:00" required>
+        <button type="submit" class="btn-add">+ Salvar</button>
+      </form>
+      <div id="listaLemb"></div>
+    </section>
   </div>
 </div>
 
 <script>
 const q = new URLSearchParams(location.search);
 const KEY = q.get("key") || "";
-const DEMO = q.has("demo");           // ?demo=1 | ?demo=ruim | ?demo=medio | ?demo=bom
-const C = { estresse: "#f23d55", sono: "#22d3a5", tristeza: "#a63fc0", solidao: "#f47b30", alim: "#ffc233" };
-const CAMPOS = ["sono_qualidade","estresse_tarde","tristeza_desanimo","solidao","alimentacao","leitura_biblia",
-  "oracao_manha","exercicio_fisico","descanso_dia","pornografia","tempo_tela_min","imprevisto","relato_livre"];
+const DEMO = q.has("demo");
+const C = { estresse: "#f23d55", sono: "#22d3a5", tristeza: "#a63fc0", solidao: "#f47b30", correria: "#ffc233", pressao: "#5aa9ff" };
+const CAMPOS = ["sono_qualidade","leitura_biblia","oracao_manha","estresse_tarde","imprevisto","tristeza_desanimo",
+  "solidao","alimentacao","exercicio_fisico","descanso_dia","estudou_leu","hobby_feito","pornografia",
+  "tempo_tela_min","tempo_sozinho_min","correria","pressao_social","habitos_ruins","relato_livre"];
 const NOMES = { ruim: "Dias pesados", medio: "Dias oscilantes", bom: "Dias leves", vazio: "Sem dados" };
 const MSGS = {
-  ruim: "Seus últimos dias estão pesados. Vá com calma. Se puder, converse com alguém de confiança ou com seu psicólogo.",
-  medio: "Dias de altos e baixos. Pequenos cuidados com sono, pausas e movimento fazem diferença.",
-  bom: "Você está num bom momento! Repare no que anda funcionando e mantenha.",
+  ruim: "Dias pesados por aqui. Vá no seu ritmo e use /espaco ou converse com alguém de confiança.",
+  medio: "Oscilações normais no processo. Observe o que melhora seu humor nos dias mais leves.",
+  bom: "Bom momento! Repare quais hábitos estão sustentando esse equilíbrio.",
   vazio: "Responda seu primeiro check-in no Telegram."
 };
 
-let DATA = [], periodo = 14, selDate = null, previa = "", charts = {};
+let DATA = [], LEMBRETES = [], EVENTOS = [], STREAK = { atual: 0, melhor: 0 }, periodo = 14, selDate = null, previa = "", charts = {};
 const $ = id => document.getElementById(id);
 const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 const fmt1 = v => v == null ? "–" : v.toFixed(1).replace(".", ",");
 const fmtCurta = s => s.slice(8, 10) + "/" + s.slice(5, 7);
-const fmtLonga = s => { const t = new Date(s + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }); return t.charAt(0).toUpperCase() + t.slice(1); };
-const fmtTela = m => m == null ? "–" : Math.floor(m / 60) + "h " + String(Math.round(m % 60)).padStart(2, "0") + "m";
+const fmtLonga = s => { const d = new Date(s + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }); return d.charAt(0).toUpperCase() + d.slice(1); };
+const fmtMin = m => m == null ? "–" : Math.floor(m / 60) + "h " + String(Math.round(m % 60)).padStart(2, "0") + "m";
 const temRegistro = r => CAMPOS.some(k => r[k] != null);
 const avg = (arr, k) => { const v = arr.map(r => r[k]).filter(x => x != null); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
 
-/* ---------- índice de bem-estar (0–100) ---------- */
 function scoreDia(r) {
-  const parts = [[r.sono_qualidade, v => (v - 1) / 4, .25], [r.estresse_tarde, v => (5 - v) / 4, .25],
-                 [r.tristeza_desanimo, v => (5 - v) / 4, .30], [r.solidao, v => (5 - v) / 4, .20]];
+  const parts = [
+    [r.sono_qualidade, v => (v - 1) / 4, .20],
+    [r.estresse_tarde, v => (5 - v) / 4, .20],
+    [r.tristeza_desanimo, v => (5 - v) / 4, .25],
+    [r.solidao, v => (5 - v) / 4, .15],
+    [r.correria, v => (5 - v) / 4, .10],
+    [r.pressao_social, v => (5 - v) / 4, .10]
+  ];
   let s = 0, w = 0;
   for (const [v, f, p] of parts) if (v != null) { s += f(v) * p; w += p; }
-  return w >= .45 ? Math.round(s / w * 100) : null;
+  return w >= .4 ? Math.round(s / w * 100) : null;
 }
 const nivel = s => s == null ? "vazio" : s < 40 ? "ruim" : s < 70 ? "medio" : "bom";
 
-/* ---------- dados ---------- */
 async function carregar() {
-  if (DEMO) return gerarDemo(30);
-  const r = await fetch(`/api/dados?key=${encodeURIComponent(KEY)}&dias=30`);
-  if (!r.ok) throw new Error(r.status);
-  return r.json();
+  if (DEMO) {
+    STREAK = { atual: 12, melhor: 19 };
+    EVENTOS = [{ data: new Date().toISOString().slice(0, 10), titulo: "Ajuste do MVP e novos gráficos", descricao: "Modo demo", categoria: "conquista" }];
+    LEMBRETES = [
+      { id: 1, titulo: "Versículo da manhã", categoria: "versiculo", tipo: "diario", dias: "", horario: "07:30", ativo: 1 },
+      { id: 2, titulo: "Dia do Hobby", categoria: "hobby", tipo: "semanal", dias: "sat", horario: "10:00", ativo: 1 }
+    ];
+    return gerarDemo(30);
+  }
+  const qs = `?key=${encodeURIComponent(KEY)}`;
+  const [rDados, rStreak, rLemb, rEv] = await Promise.all([
+    fetch(`/api/dados${qs}&dias=30`),
+    fetch(`/api/streak${qs}`),
+    fetch(`/api/lembretes${qs}`),
+    fetch(`/api/eventos${qs}&dias=90`)
+  ]);
+  if (!rDados.ok) throw new Error(rDados.status);
+  if (rStreak.ok) STREAK = await rStreak.json();
+  if (rLemb.ok) LEMBRETES = await rLemb.json();
+  if (rEv.ok) EVENTOS = await rEv.json();
+  return rDados.json();
 }
+
 function gerarDemo(n) {
-  const base = { ruim: .2, medio: .5, bom: .85 }[q.get("demo")];
   let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const out = [], hoje = new Date();
   for (let i = n - 1; i >= 0; i--) {
     const dt = new Date(hoje); dt.setDate(hoje.getDate() - i);
-    const iso = dt.getFullYear() + "-" + String(dt.getMonth() + 1).padStart(2, "0") + "-" + String(dt.getDate()).padStart(2, "0");
-    if (i % 11 === 5) { out.push({ data: iso }); continue; }
-    const t = (n - 1 - i) / (n - 1);
-    const b = base != null ? base : .5 + .3 * Math.sin(t * 6) + .15 * (t - .5);
-    const g = () => Math.min(1, Math.max(0, b + (rnd() - .5) * .35));
-    const esc = x => 1 + Math.round(4 * x);
-    out.push({ data: iso, sono_qualidade: esc(g()), estresse_tarde: esc(1 - g()), tristeza_desanimo: esc(1 - g()),
-      solidao: esc(1 - g()), alimentacao: esc(1 - g()), leitura_biblia: +(rnd() < .3 + .6 * b), oracao_manha: +(rnd() < .3 + .6 * b),
-      exercicio_fisico: +(rnd() < .2 + .6 * b), descanso_dia: +(rnd() < .3 + .5 * b), pornografia: +(rnd() < .5 - .4 * b),
-      tempo_tela_min: Math.round(120 + (1 - b) * 300 + rnd() * 60),
-      imprevisto: rnd() < .2 ? "Reunião de última hora" : "Nenhum", relato_livre: "Dia de exemplo (modo demo)." });
+    const iso = dt.toISOString().slice(0, 10);
+    const b = .5 + .3 * Math.sin(i * .4);
+    const esc = x => 1 + Math.round(4 * Math.min(1, Math.max(0, x)));
+    out.push({
+      data: iso, sono_qualidade: esc(b), estresse_tarde: esc(1 - b), tristeza_desanimo: esc(1 - b),
+      solidao: esc(1 - b * .8), correria: esc(rnd()), pressao_social: esc(rnd() * .8),
+      leitura_biblia: +(rnd() < .6), oracao_manha: +(rnd() < .65), exercicio_fisico: +(rnd() < .55),
+      estudou_leu: +(rnd() < .6), hobby_feito: +(rnd() < .35), descanso_dia: +(rnd() < .5),
+      pornografia: i < 12 ? 0 : +(rnd() < .2), habitos_ruins: rnd() < .2 ? "Álcool" : "Nenhum",
+      tempo_sozinho_min: Math.round(120 + rnd() * 240), tempo_tela_min: Math.round(150 + rnd() * 220),
+      imprevisto: rnd() < .2 ? "Imprevisto no dia" : "Nenhum", relato_livre: "Registro de exemplo."
+    });
   }
   return out;
 }
 
-/* ---------- cérebro ---------- */
-function scoreRecente() {
-  const s = DATA.map(scoreDia).filter(x => x != null).slice(-3);
-  return s.length ? Math.round(s.reduce((a, b) => a + b, 0) / s.length) : null;
-}
 function atualizarCerebro() {
-  const sc = scoreRecente();
-  const real = nivel(sc), est = previa || real;
+  const s = DATA.map(scoreDia).filter(x => x != null).slice(-3);
+  const sc = s.length ? Math.round(s.reduce((a, b) => a + b, 0) / s.length) : null;
+  const est = previa || nivel(sc);
   $("brainBox").dataset.estado = est;
   $("score").textContent = previa ? "" : (sc == null ? "–" : sc + "%");
   $("estado").textContent = NOMES[est];
@@ -346,117 +339,210 @@ function atualizarCerebro() {
 }
 $("previa").addEventListener("click", e => { if (e.target.tagName === "BUTTON") { previa = e.target.dataset.e; atualizarCerebro(); } });
 
-/* ---------- barras ---------- */
 function renderBarras(d) {
   const box = $("barras"); box.textContent = "";
   [["😴", "Sono", "sono_qualidade", C.sono], ["⚡", "Estresse", "estresse_tarde", C.estresse],
-   ["💧", "Tristeza", "tristeza_desanimo", C.tristeza], ["🫂", "Solidão", "solidao", C.solidao]].forEach(([ic, nome, k, cor]) => {
+   ["💧", "Tristeza", "tristeza_desanimo", C.tristeza], ["🫂", "Solidão", "solidao", C.solidao],
+   ["🏃‍♂️", "Correria", "correria", C.correria], ["🎭", "Pressão", "pressao_social", C.pressao]].forEach(([ic, nome, k, cor]) => {
     const v = avg(d, k), pct = v == null ? 0 : Math.round(v / 5 * 100);
     const row = el("div", "hb"); row.style.setProperty("--c", cor);
     row.append(el("div", "ic", ic));
     const tr = el("div", "trilho"), br = el("div", "barra"); br.append(el("span", "", `${nome} · ${fmt1(v)}/5`)); tr.append(br);
     row.append(tr, el("b", "", v == null ? "–" : pct + "%")); box.append(row);
-    requestAnimationFrame(() => requestAnimationFrame(() => { br.style.width = Math.max(pct, 28) + "%"; }));
+    requestAnimationFrame(() => requestAnimationFrame(() => { br.style.width = Math.max(pct, 24) + "%"; }));
   });
 }
 
-/* ---------- gráficos ---------- */
 Chart.defaults.color = "#9fb0cc";
 Chart.defaults.font.family = '"Nunito", system-ui, sans-serif';
 const gridCor = "rgba(255,255,255,.08)";
-const tooltipBase = { backgroundColor: "#121a2c", borderColor: "rgba(255,255,255,.18)", borderWidth: 1, padding: 12, titleFont: { weight: "800" } };
 
-function linha(label, k, cor, d) {
-  return { label, data: d.map(r => r[k] ?? null), borderColor: cor, fill: true, tension: .35, spanGaps: true, borderWidth: 3,
-    backgroundColor: c => { const { chart } = c; if (!chart.chartArea) return cor + "22";
-      const g = chart.ctx.createLinearGradient(0, chart.chartArea.top, 0, chart.chartArea.bottom);
-      g.addColorStop(0, cor + "40"); g.addColorStop(1, cor + "00"); return g; },
-    pointRadius: 5, pointHoverRadius: 10, pointBackgroundColor: cor, pointBorderColor: "#fff", pointBorderWidth: 2 };
+function linha(label, cor, arr) {
+  return { label, data: arr, borderColor: cor, tension: .35, spanGaps: true, borderWidth: 3, pointRadius: 4, backgroundColor: cor };
 }
+
 function renderGraficos(d) {
   Object.values(charts).forEach(c => c.destroy());
   const labels = d.map(r => fmtCurta(r.data));
-  charts.g1 = new Chart($("g1"), { type: "line",
-    data: { labels, datasets: [linha("Estresse", "estresse_tarde", C.estresse, d), linha("Sono", "sono_qualidade", C.sono, d), linha("Tristeza", "tristeza_desanimo", C.tristeza, d)] },
+  charts.g1 = new Chart($("g1"), {
+    type: "line",
+    data: { labels, datasets: [
+      linha("Estresse", C.estresse, d.map(r => r.estresse_tarde ?? null)),
+      linha("Sono", C.sono, d.map(r => r.sono_qualidade ?? null)),
+      linha("Tristeza", C.tristeza, d.map(r => r.tristeza_desanimo ?? null))
+    ]},
     options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
       scales: { y: { min: 1, max: 5, ticks: { stepSize: 1 }, grid: { color: gridCor } }, x: { grid: { display: false } } },
-      plugins: { legend: { labels: { usePointStyle: true, boxWidth: 8, color: "#f2f5fb" } },
-        tooltip: { ...tooltipBase, callbacks: { title: it => fmtLonga(d[it[0].dataIndex].data),
-          footer: it => { const r = d[it[0].dataIndex]; return r.imprevisto && r.imprevisto !== "Nenhum" ? "⚠ " + r.imprevisto : ""; } } } },
-      onClick: (e, _, chart) => { const p = chart.getElementsAtEventForMode(e, "index", { intersect: false }, true); if (p.length) selecionar(d[p[0].index].data); } } });
-  const barra = (label, k, cor) => ({ label, data: d.map(r => r[k] ?? null), backgroundColor: cor, borderRadius: 8, borderSkipped: false });
-  charts.g2 = new Chart($("g2"), { type: "bar",
-    data: { labels, datasets: [barra("Solidão (5 = isolamento)", "solidao", C.solidao), barra("Alimentação (5 = péssima)", "alimentacao", C.alim)] },
-    options: { responsive: true, maintainAspectRatio: false,
-      scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 }, grid: { color: gridCor } }, x: { grid: { display: false } } },
-      plugins: { legend: { labels: { usePointStyle: true, boxWidth: 8, color: "#f2f5fb" } }, tooltip: { ...tooltipBase, callbacks: { title: it => fmtLonga(d[it[0].dataIndex].data) } } } } });
+      onClick: (e, _, chart) => { const p = chart.getElementsAtEventForMode(e, "index", { intersect: false }, true); if (p.length) selecionar(d[p[0].index].data); }
+    }
+  });
+
+  const hKeys = ["leitura_biblia", "oracao_manha", "exercicio_fisico", "estudou_leu", "hobby_feito", "descanso_dia"];
+  charts.gComp = new Chart($("gComp"), {
+    type: "line",
+    data: { labels, datasets: [
+      linha("Bons hábitos (%)", C.sono, d.map(r => {
+        const v = hKeys.map(k => r[k]).filter(x => x != null);
+        return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length * 100) : null;
+      })),
+      linha("Sintomas (estresse/tristeza %)", C.estresse, d.map(r => {
+        const v = [r.estresse_tarde, r.tristeza_desanimo].filter(x => x != null);
+        return v.length ? Math.round((v.reduce((a, b) => a + b, 0) / v.length) / 5 * 100) : null;
+      }))
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+      scales: { y: { min: 0, max: 100, grid: { color: gridCor } }, x: { grid: { display: false } } } }
+  });
+
+  charts.gCarga = new Chart($("gCarga"), {
+    type: "bar",
+    data: { labels, datasets: [
+      { type: "line", label: "Correria (1-5)", data: d.map(r => r.correria ?? null), borderColor: C.correria, tension: .35, borderWidth: 3, yAxisID: "y" },
+      { type: "line", label: "Pressão social (1-5)", data: d.map(r => r.pressao_social ?? null), borderColor: C.pressao, tension: .35, borderWidth: 3, yAxisID: "y" },
+      { type: "bar", label: "Horas sozinho", data: d.map(r => r.tempo_sozinho_min != null ? +(r.tempo_sozinho_min / 60).toFixed(1) : null), backgroundColor: "rgba(244,123,48,.45)", borderRadius: 6, yAxisID: "y1" }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+      scales: { y: { min: 0, max: 5, grid: { color: gridCor } }, y1: { min: 0, max: 16, position: "right", grid: { display: false } }, x: { grid: { display: false } } } }
+  });
 }
 
-/* ---------- hábitos em triângulos ---------- */
+function renderCiclos() {
+  const atual = STREAK.atual || 0, melhor = STREAK.melhor || 0;
+  const marcos = [7, 14, 30, 90, 180, 365];
+  const prox = marcos.find(m => m > atual) || 365;
+  const ant = [...marcos].reverse().find(m => m <= atual) || 0;
+  const pct = Math.min(100, Math.round(((atual - ant) / (prox - ant)) * 100));
+  $("seqAtual").textContent = `${atual} ${atual === 1 ? "dia" : "dias"}`;
+  $("seqMelhor").textContent = `· recorde: ${melhor}d`;
+  $("seqMeta").textContent = `Próxima meta: ${prox} dias (${pct}%)`;
+  requestAnimationFrame(() => { $("seqProg").style.width = Math.max(pct, 4) + "%"; });
+  const box = $("marcos"); box.textContent = "";
+  marcos.forEach(m => {
+    const card = el("div", "marco" + (atual >= m ? " ok" : m === prox ? " atual" : ""));
+    card.append(el("b", "", m >= 30 ? (m / 30) + "m" : m + "d"), el("span", "", atual >= m ? "Feito ✓" : `${m - atual}d`));
+    box.append(card);
+  });
+}
+
 function renderTris(d) {
   const box = $("tris"), leg = $("trisLeg"); box.textContent = ""; leg.textContent = "";
-  [["Bíblia", "leitura_biblia", "#f47b30"], ["Oração", "oracao_manha", "#22d3a5"], ["Exercício", "exercicio_fisico", "#a63fc0"], ["Pausas", "descanso_dia", "#f23d55"]].forEach(([nome, k, cor]) => {
+  [["Bíblia", "leitura_biblia", "#f47b30"], ["Oração", "oracao_manha", "#22d3a5"], ["Treino", "exercicio_fisico", "#a63fc0"],
+   ["Estudo", "estudou_leu", "#5aa9ff"], ["Hobby", "hobby_feito", "#ffc233"], ["Pausas", "descanso_dia", "#f23d55"]].forEach(([nome, k, cor]) => {
     const v = d.map(r => r[k]).filter(x => x != null);
     const pct = v.length ? Math.round(v.filter(x => x === 1).length / v.length * 100) : 0;
-    const t = el("div", "tri"); t.style.setProperty("--c", cor); t.title = `${nome}: ${pct}% dos ${v.length} dias respondidos`;
+    const t = el("div", "tri"); t.style.setProperty("--c", cor);
     const alt = el("div", "alt"); alt.append(el("div", "ponto"), el("div", "forma")); t.append(alt, el("div", "pct", v.length ? pct + "%" : "–"));
     box.append(t); leg.append(el("span", "", nome));
     requestAnimationFrame(() => requestAnimationFrame(() => { alt.style.height = Math.max(pct, 8) + "%"; }));
   });
 }
 
-/* ---------- cartões ---------- */
 function renderCartoes(d) {
-  const tela = avg(d, "tempo_tela_min"); $("c1").textContent = fmtTela(tela == null ? null : Math.round(tela));
-  const mx = d.filter(r => r.tempo_tela_min != null).sort((a, b) => b.tempo_tela_min - a.tempo_tela_min)[0];
-  $("c1t").textContent = mx ? `média por dia · maior: ${fmtTela(mx.tempo_tela_min)} (${fmtCurta(mx.data)})` : "sem registros no período";
+  const soz = avg(d, "tempo_sozinho_min");
+  $("c1").textContent = fmtMin(soz == null ? null : Math.round(soz));
+  $("c1t").textContent = "média diária sozinho";
 
-  let seq = 0;
-  const rev = [...DATA].reverse(); let i = 0;
-  if (rev[0] && rev[0].pornografia == null) i = 1;            // hoje ainda não respondido
-  for (; i < rev.length && rev[i].pornografia === 0; i++) seq++;
-  $("c2").textContent = seq + (seq === 1 ? " dia" : " dias");
-  $("c2t").textContent = seq ? "seguidos sem pornografia. Cada dia conta." : "Recomeçar faz parte. Um dia de cada vez.";
+  const tela = avg(d, "tempo_tela_min");
+  $("c2").textContent = fmtMin(tela == null ? null : Math.round(tela));
+  $("c2t").textContent = "média diária de tela";
 
   const pts = d.map(r => ({ r, s: scoreDia(r) })).filter(x => x.s != null);
   const melhor = [...pts].sort((a, b) => b.s - a.s)[0], pior = [...pts].sort((a, b) => a.s - b.s)[0];
   $("c3").textContent = melhor ? melhor.s + "%" : "–"; $("c3t").textContent = melhor ? fmtLonga(melhor.r.data) : "sem dados";
-  $("c4").textContent = pior ? pior.s + "%" : "–";
-  $("c4t").textContent = pior ? fmtLonga(pior.r.data) + (pior.r.imprevisto && pior.r.imprevisto !== "Nenhum" ? " · " + pior.r.imprevisto : "") : "sem dados";
+  $("c4").textContent = pior ? pior.s + "%" : "–"; $("c4t").textContent = pior ? fmtLonga(pior.r.data) : "sem dados";
 }
 
-/* ---------- dia a dia ---------- */
+function renderTimeline() {
+  const box = $("timeline"); box.textContent = "";
+  if (!EVENTOS.length) { box.append(el("p", "muted", "Use /evento no Telegram para registrar marcos na linha do tempo.")); return; }
+  EVENTOS.forEach(ev => {
+    const item = el("div", "tl-item");
+    item.append(el("div", "tl-data", `${fmtCurta(ev.data)} · ${ev.categoria}`), el("p", "tl-txt", ev.titulo + (ev.descricao ? ` — ${ev.descricao}` : "")));
+    box.append(item);
+  });
+}
+
 function renderTira(d) {
   const tira = $("tira"); tira.textContent = "";
-  d.forEach(r => { const b = el("button", "dia " + nivel(scoreDia(r)) + (r.data === selDate ? " sel" : ""), r.data.slice(8, 10));
-    b.title = fmtCurta(r.data); b.onclick = () => selecionar(r.data); tira.append(b); });
+  d.forEach(r => {
+    const b = el("button", "dia " + nivel(scoreDia(r)) + (r.data === selDate ? " sel" : ""), r.data.slice(8, 10));
+    b.onclick = () => selecionar(r.data); tira.append(b);
+  });
 }
 function selecionar(data) { selDate = data; renderTira(DATA.slice(-periodo)); renderDetalhe(); }
 function renderDetalhe() {
   const r = DATA.find(x => x.data === selDate), box = $("detalhe"); box.textContent = "";
   if (!r) return;
-  const sc = scoreDia(r), topo = el("div", "det-topo");
-  topo.append(el("h3", "", fmtLonga(r.data)), el("span", "badge " + nivel(sc), sc == null ? "sem índice" : `${sc}% · ${NOMES[nivel(sc)]}`));
-  box.append(topo);
-  if (!temRegistro(r)) { box.append(el("p", "muted", "Nenhum registro neste dia.")); return; }
+  const sc = scoreDia(r);
+  box.append(el("h3", "", `${fmtLonga(r.data)} ${sc != null ? `· ${sc}%` : ""}`));
+  if (!temRegistro(r)) { box.append(el("p", "muted", "Sem registros neste dia.")); return; }
   const chips = el("div", "chips"), add = (txt, cor) => { const c = el("span", "chip", txt); c.style.setProperty("--c", cor); chips.append(c); };
   [["😴 Sono", "sono_qualidade", C.sono], ["⚡ Estresse", "estresse_tarde", C.estresse], ["💧 Tristeza", "tristeza_desanimo", C.tristeza],
-   ["🫂 Solidão", "solidao", C.solidao], ["🍽️ Alimentação", "alimentacao", C.alim]].forEach(([n, k, c]) => { if (r[k] != null) add(`${n} ${r[k]}/5`, c); });
-  [["📖 Bíblia", "leitura_biblia"], ["🙏 Oração", "oracao_manha"], ["🏃 Exercício", "exercicio_fisico"], ["☕ Pausas", "descanso_dia"]].forEach(([n, k]) => {
-    if (r[k] != null) add(`${n} ${r[k] ? "✓" : "✗"}`, r[k] ? "#22d3a5" : "rgba(255,255,255,.25)"); });
-  if (r.pornografia != null) add(r.pornografia ? "Pornografia: sim" : "Sem pornografia ✓", r.pornografia ? "#f23d55" : "#22d3a5");
-  if (r.tempo_tela_min != null) add("📱 " + fmtTela(r.tempo_tela_min), "#5aa9ff");
+   ["🫂 Solidão", "solidao", C.solidao], ["🏃‍♂️ Correria", "correria", C.correria], ["🎭 Pressão", "pressao_social", C.pressao]].forEach(([n, k, c]) => { if (r[k] != null) add(`${n} ${r[k]}/5`, c); });
+  [["📖 Bíblia", "leitura_biblia"], ["🙏 Oração", "oracao_manha"], ["🏃 Treino", "exercicio_fisico"],
+   ["📚 Estudo", "estudou_leu"], ["🎨 Hobby", "hobby_feito"], ["☕ Pausas", "descanso_dia"]].forEach(([n, k]) => {
+    if (r[k] != null) add(`${n} ${r[k] ? "✓" : "✗"}`, r[k] ? C.sono : "rgba(255,255,255,.25)"); });
+  if (r.tempo_sozinho_min != null) add("🧍 Sozinho: " + fmtMin(r.tempo_sozinho_min), C.pressao);
+  if (r.tempo_tela_min != null) add("📱 Tela: " + fmtMin(r.tempo_tela_min), C.solidao);
+  if (r.habitos_ruins && r.habitos_ruins !== "Nenhum") add("🍺 " + r.habitos_ruins, C.estresse);
+  if (r.pornografia != null) add(r.pornografia ? "Pornografia: sim" : "Sem pornografia ✓", r.pornografia ? C.estresse : C.sono);
   box.append(chips);
   if (r.imprevisto && r.imprevisto !== "Nenhum") box.append(el("p", "alerta", "⚠ Imprevisto: " + r.imprevisto));
   if (r.relato_livre) { const b = el("blockquote"); b.textContent = r.relato_livre; box.append(b); }
 }
 
-/* ---------- principal ---------- */
+function renderLembretes() {
+  const box = $("listaLemb"); box.textContent = "";
+  if (!LEMBRETES.length) { box.append(el("p", "muted", "Nenhum lembrete cadastrado.")); return; }
+  LEMBRETES.forEach(l => {
+    const row = el("div", "lemb-row");
+    const left = el("div");
+    left.append(el("span", "lemb-tag", `${l.horario} · ${l.tipo === "semanal" ? l.dias : "diário"}`),
+                el("span", "lemb-tag", l.categoria),
+                el("strong", "", l.titulo),
+                el("span", "muted", l.ativo ? " (ativo)" : " (pausado)"));
+    const btns = el("div");
+    const bTog = el("button", "lemb-btn", l.ativo ? "Pausar" : "Ativar");
+    bTog.onclick = async () => {
+      if (!DEMO) await fetch(`/api/lembretes/${l.id}/toggle?key=${encodeURIComponent(KEY)}`, { method: "POST" });
+      l.ativo = l.ativo ? 0 : 1; renderLembretes();
+    };
+    const bDel = el("button", "lemb-btn lemb-del", "Excluir");
+    bDel.onclick = async () => {
+      if (!DEMO) await fetch(`/api/lembretes/${l.id}?key=${encodeURIComponent(KEY)}`, { method: "DELETE" });
+      LEMBRETES = LEMBRETES.filter(x => x.id !== l.id); renderLembretes();
+    };
+    btns.append(bTog, bDel);
+    row.append(left, btns);
+    box.append(row);
+  });
+}
+
+$("formLemb").addEventListener("submit", async e => {
+  e.preventDefault();
+  const tipo = $("lTipo").value;
+  const diasSel = tipo === "semanal" && $("lDias").value ? $("lDias").value.split(",") : [];
+  const payload = { titulo: $("lTitulo").value.trim(), categoria: $("lCat").value, tipo, dias: diasSel, horario: $("lHora").value };
+  if (DEMO) {
+    LEMBRETES.push({ id: Date.now(), ativo: 1, ...payload });
+  } else {
+    const res = await fetch(`/api/lembretes?key=${encodeURIComponent(KEY)}`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      const created = await res.json();
+      LEMBRETES.push({ id: created.id, ativo: 1, ...payload });
+    }
+  }
+  $("lTitulo").value = "";
+  renderLembretes();
+});
+
 function render() {
   const d = DATA.slice(-periodo);
-  $("periodo").textContent = `Últimos ${d.length} dias · ${d.filter(temRegistro).length} com registro` + (DEMO ? " · DADOS DE EXEMPLO" : "");
+  $("periodo").textContent = `Últimos ${d.length} dias · ${d.filter(temRegistro).length} com registro` + (DEMO ? " · DEMO" : "");
   if (!d.some(r => r.data === selDate)) selDate = ([...d].reverse().find(temRegistro) || d[d.length - 1] || {}).data;
-  atualizarCerebro(); renderBarras(d); renderGraficos(d); renderTris(d); renderCartoes(d); renderTira(d); renderDetalhe();
+  atualizarCerebro(); renderBarras(d); renderGraficos(d); renderCiclos(); renderTris(d); renderCartoes(d); renderTimeline(); renderTira(d); renderDetalhe(); renderLembretes();
 }
 $("toggle").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
