@@ -40,10 +40,12 @@
   @media (max-width: 900px) { .s5, .s6, .s7, .s3 { grid-column: span 12; } .s3 { grid-column: span 6; } }
   @media (max-width: 520px) { .s3 { grid-column: span 12; } h1 { font-size: 2.1rem; } }
 
+  /* ---------- Cérebro completo ---------- */
   .brain-box { --brain: #8e9cb8; text-align: center; }
   .brain-box[data-estado="ruim"]  { --brain: #f23d55; }
   .brain-box[data-estado="medio"] { --brain: #f47b30; }
   .brain-box[data-estado="bom"]   { --brain: #22d3a5; }
+  .brain-box svg { width: min(100%, 280px); height: auto; overflow: visible; display: block; margin: 0 auto; }
   .brain-fill { fill: var(--brain); transition: fill .5s; }
   .halo { fill: var(--brain); opacity: .14; transform-box: fill-box; transform-origin: center; animation: pulso 2.6s ease-in-out infinite; }
   .corpo { transform-origin: 120px 205px; }
@@ -52,7 +54,29 @@
   [data-estado="medio"] .f-medio, [data-estado="medio"] .x-medio,
   [data-estado="vazio"] .f-medio,
   [data-estado="bom"] .f-bom, [data-estado="bom"] .x-bom { display: inline; }
+  [data-estado="ruim"] .corpo  { animation: tremer 1.7s ease-in-out infinite; }
+  [data-estado="medio"] .corpo { animation: balancar 3.4s ease-in-out infinite; }
+  [data-estado="bom"] .corpo   { animation: pular 1.1s ease-in-out infinite; }
+  .lagrima { animation: lagrima 1.9s ease-in infinite; }
+  .lagrima.b { animation-delay: .8s; }
+  .chuva { animation: chuva .9s linear infinite; }
+  .raio { animation: raio 2.6s infinite; }
+  .blink { transform-box: fill-box; transform-origin: center; animation: piscar 4.2s infinite; }
+  .spark { transform-box: fill-box; transform-origin: center; animation: brilhar 1.7s ease-in-out infinite; }
+  .pensa circle { animation: subir 2.2s ease-in-out infinite; }
+  .pensa circle:nth-child(2) { animation-delay: .3s; } .pensa circle:nth-child(3) { animation-delay: .6s; }
   @keyframes pulso { 50% { transform: scale(1.09); } }
+  @keyframes tremer { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-1.4deg) translate(-1px,1px); }
+    40% { transform: rotate(1.2deg); } 60% { transform: rotate(-.8deg) translate(1px,1px); } 80% { transform: rotate(.9deg); } }
+  @keyframes balancar { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+  @keyframes pular { 0%,100% { transform: translateY(0) scale(1.02,.97); } 50% { transform: translateY(-12px) scale(.99,1.02); } }
+  @keyframes lagrima { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(36px); opacity: 0; } }
+  @keyframes chuva { 0% { transform: translateY(-4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(12px); opacity: 0; } }
+  @keyframes raio { 0%,86%,100% { opacity: .15; } 88%,92% { opacity: 1; } 90% { opacity: .3; } }
+  @keyframes piscar { 0%,92%,100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+  @keyframes brilhar { 0%,100% { transform: scale(.3) rotate(0); opacity: .2; } 50% { transform: scale(1) rotate(25deg); opacity: 1; } }
+  @keyframes subir { 0%,100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(-5px); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 
   .score { font-family: "Barlow Condensed", sans-serif; font-size: 3.5rem; line-height: 1; font-weight: 700; margin-top: 6px; color: var(--brain); }
   .estado { font-family: "Barlow Condensed", sans-serif; font-size: 1.45rem; text-transform: uppercase; font-weight: 700; }
@@ -145,6 +169,68 @@
     <section class="painel s5">
       <span class="tit" style="--c:var(--laranja)">Como estou</span>
       <div class="brain-box" id="brainBox" data-estado="vazio">
+        <svg viewBox="0 0 240 230" role="img" aria-label="Cérebro que muda de expressão conforme sua saúde mental">
+          <defs>
+            <g id="bs">
+              <circle cx="70" cy="70" r="30"/><circle cx="110" cy="55" r="32"/><circle cx="150" cy="70" r="30"/>
+              <circle cx="50" cy="100" r="28"/><circle cx="170" cy="100" r="28"/>
+              <circle cx="75" cy="118" r="30"/><circle cx="145" cy="118" r="30"/><circle cx="110" cy="108" r="36"/>
+              <circle cx="90" cy="142" r="24"/><circle cx="130" cy="142" r="24"/>
+              <rect x="100" y="150" width="20" height="26" rx="9"/>
+            </g>
+          </defs>
+          <circle class="halo" cx="120" cy="125" r="100"/>
+
+          <g class="extra x-ruim" transform="translate(14 4)">
+            <g fill="#5d6b8a"><circle cx="22" cy="24" r="12"/><circle cx="38" cy="18" r="14"/><circle cx="54" cy="25" r="11"/><rect x="14" y="24" width="48" height="12" rx="6"/></g>
+            <path class="raio" d="M36 32 L30 46 L38 44 L33 58 L48 40 L40 42 L45 32Z" fill="#ffc233"/>
+            <g stroke="#7cc4ff" stroke-width="2.5" stroke-linecap="round">
+              <line class="chuva" x1="20" y1="42" x2="17" y2="50"/><line class="chuva" style="animation-delay:.3s" x1="56" y1="42" x2="53" y2="50"/>
+              <line class="chuva" style="animation-delay:.6s" x1="38" y1="44" x2="35" y2="52"/>
+            </g>
+          </g>
+          <g class="extra x-medio pensa" fill="#cfd9ee"><circle cx="196" cy="52" r="3.5"/><circle cx="208" cy="38" r="5"/><circle cx="224" cy="20" r="8"/></g>
+          <g class="extra x-bom" fill="#ffd76a">
+            <g transform="translate(26 66)"><path class="spark" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3Z"/></g>
+            <g transform="translate(216 54)"><path class="spark" style="animation-delay:.4s" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3Z"/></g>
+            <g transform="translate(22 172)"><path class="spark" style="animation-delay:.8s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
+            <g transform="translate(220 158)"><path class="spark" style="animation-delay:1.1s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
+            <g transform="translate(120 14)"><path class="spark" style="animation-delay:.6s" d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z"/></g>
+          </g>
+
+          <g class="corpo">
+            <g transform="translate(10 30)">
+              <use href="#bs" fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
+              <use href="#bs" class="brain-fill"/>
+              <g fill="none" stroke="rgba(0,0,0,.2)" stroke-width="3.5" stroke-linecap="round">
+                <path d="M110 28 C100 48 120 64 110 82"/><path d="M68 55 q16 10 6 26"/><path d="M152 55 q-16 10 -6 26"/>
+                <path d="M52 104 q18 -6 24 10"/><path d="M168 104 q-18 -6 -24 10"/><path d="M92 150 q10 8 18 0 q8 8 18 0"/>
+              </g>
+
+              <g class="face f-ruim">
+                <g transform="rotate(32 150 55)"><rect x="128" y="46" width="44" height="18" rx="9" fill="#f6dcc0" stroke="#d3a577" stroke-width="2"/>
+                  <g fill="#d3a577"><circle cx="143" cy="55" r="1.6"/><circle cx="150" cy="55" r="1.6"/><circle cx="157" cy="55" r="1.6"/></g></g>
+                <g stroke="#2a1b2e" stroke-width="4" stroke-linecap="round" fill="none"><path d="M76 96 L98 88"/><path d="M144 96 L122 88"/><path d="M94 134 Q110 118 126 134" stroke-width="5"/></g>
+                <ellipse cx="88" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/><ellipse cx="132" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/>
+                <circle cx="86" cy="103" r="2" fill="#fff"/><circle cx="130" cy="103" r="2" fill="#fff"/>
+                <path class="lagrima" d="M82 112 C78 118 76 122 82 126 C88 122 86 118 82 112Z" fill="#7cc4ff"/>
+                <path class="lagrima b" d="M138 112 C134 118 132 122 138 126 C144 122 142 118 138 112Z" fill="#7cc4ff"/>
+              </g>
+
+              <g class="face f-medio">
+                <g stroke="#2a1b2e" stroke-width="4" stroke-linecap="round" fill="none"><path d="M78 92 L98 92"/><path d="M122 94 L142 88"/><path d="M96 127 Q103 121 110 127 T124 127" stroke-width="5"/></g>
+                <ellipse class="blink" cx="88" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/><ellipse class="blink" cx="132" cy="106" rx="5.5" ry="7" fill="#2a1b2e"/>
+                <circle cx="86" cy="103" r="2" fill="#fff"/><circle cx="130" cy="103" r="2" fill="#fff"/>
+              </g>
+
+              <g class="face f-bom">
+                <g stroke="#2a1b2e" stroke-width="5" stroke-linecap="round" fill="none"><path d="M79 108 Q88 92 97 108"/><path d="M123 108 Q132 92 141 108"/></g>
+                <circle cx="72" cy="122" r="7" fill="#ff8fa3" opacity=".65"/><circle cx="148" cy="122" r="7" fill="#ff8fa3" opacity=".65"/>
+                <path d="M92 118 Q110 148 128 118 Z" fill="#2a1b2e"/><path d="M101 134 Q110 126 119 134 Q110 143 101 134Z" fill="#ff7a8a"/>
+              </g>
+            </g>
+          </g>
+        </svg>
         <div class="score" id="score">–</div>
         <div class="estado" id="estado">Sem dados</div>
         <p class="msg" id="msg">Responda seu check-in no Telegram.</p>
@@ -522,6 +608,10 @@ $("formLemb").addEventListener("submit", async e => {
   e.preventDefault();
   const tipo = $("lTipo").value;
   const diasSel = tipo === "semanal" && $("lDias").value ? $("lDias").value.split(",") : [];
+  if (tipo === "semanal" && !diasSel.length) {
+    alert("Escolha ao menos um dia da semana para lembrete semanal.");
+    return;
+  }
   const payload = { titulo: $("lTitulo").value.trim(), categoria: $("lCat").value, tipo, dias: diasSel, horario: $("lHora").value };
   if (DEMO) {
     LEMBRETES.push({ id: Date.now(), ativo: 1, ...payload });
