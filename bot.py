@@ -24,7 +24,9 @@ CAT_CAMPO = {"hobby": "hobby_feito", "exercicio": "exercicio_fisico", "estudo": 
 
 # ---------- helpers ----------
 def _opcoes(p):
-    return [(str(i), i) for i in range(1, 6)] if p["tipo"] == "escala" else p["opcoes"]
+    if p["tipo"] == "escala":
+        return [(str(i), i) for i in range(p.get("min", 1), p.get("max", 5) + 1)]
+    return p["opcoes"]
 
 
 def _label(p, valor):
@@ -33,7 +35,8 @@ def _label(p, valor):
 
 def _teclado(bloco, idx, data, p):
     botoes = [InlineKeyboardButton(l, callback_data=f"r|{bloco}|{idx}|{v}|{data}") for l, v in _opcoes(p)]
-    return InlineKeyboardMarkup([botoes])
+    por_linha = 6 if len(botoes) > 5 else len(botoes)
+    return InlineKeyboardMarkup([botoes[i:i + por_linha] for i in range(0, len(botoes), por_linha)])
 
 
 async def _enviar_longo(bot, chat_id, texto):

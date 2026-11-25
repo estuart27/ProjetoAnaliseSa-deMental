@@ -268,6 +268,21 @@
       <div class="grafico sm"><canvas id="gCarga"></canvas></div>
     </section>
 
+    <section class="painel s6">
+      <span class="tit" style="--c:var(--vermelho)">Emoções difíceis (1-5 · culpa 0-10 ÷ 2)</span>
+      <div class="grafico sm"><canvas id="gEmo"></canvas></div>
+    </section>
+
+    <section class="painel s6">
+      <span class="tit" style="--c:var(--verde)">Energia, motivação e rendimento (1-5)</span>
+      <div class="grafico sm"><canvas id="gEner"></canvas></div>
+    </section>
+
+    <section class="painel s12">
+      <span class="tit" style="--c:var(--azul)">Médias do período: mente e rotina</span>
+      <div id="barras2"></div>
+    </section>
+
     <section class="painel s7">
       <span class="tit" style="--c:var(--verde)">Ciclos de Sobriedade (Metas)</span>
       <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;">
@@ -331,10 +346,12 @@
 const q = new URLSearchParams(location.search);
 const KEY = q.get("key") || "";
 const DEMO = q.has("demo");
-const C = { estresse: "#f23d55", sono: "#22d3a5", tristeza: "#a63fc0", solidao: "#f47b30", correria: "#ffc233", pressao: "#5aa9ff" };
+const C = { estresse: "#f23d55", sono: "#22d3a5", tristeza: "#a63fc0", solidao: "#f47b30", correria: "#ffc233", pressao: "#5aa9ff", ansiedade: "#ff6b9d", raiva: "#ff3b30", medo: "#8e7dff", culpa: "#c9a227", energia: "#22d3a5", motivacao: "#5aa9ff", controle: "#4cd964", produt: "#ffc233", satisf: "#f47b30" };
 const CAMPOS = ["sono_qualidade","leitura_biblia","oracao_manha","estresse_tarde","imprevisto","tristeza_desanimo",
   "solidao","alimentacao","exercicio_fisico","descanso_dia","estudou_leu","hobby_feito","pornografia",
-  "tempo_tela_min","tempo_sozinho_min","correria","pressao_social","habitos_ruins","relato_livre"];
+  "tempo_tela_min","tempo_sozinho_min","correria","pressao_social","habitos_ruins","relato_livre",
+  "energia","motivacao","ansiedade","sobrecarga","irritabilidade","procrastinacao","sensacao_controle",
+  "raiva","medo","culpa","produtividade","satisfacao"];
 const NOMES = { ruim: "Dias pesados", medio: "Dias oscilantes", bom: "Dias leves", vazio: "Sem dados" };
 const MSGS = {
   ruim: "Dias pesados por aqui. Vá no seu ritmo e use /espaco ou converse com alguém de confiança.",
@@ -407,6 +424,10 @@ function gerarDemo(n) {
       estudou_leu: +(rnd() < .6), hobby_feito: +(rnd() < .35), descanso_dia: +(rnd() < .5),
       pornografia: i < 12 ? 0 : +(rnd() < .2), habitos_ruins: rnd() < .2 ? "Álcool" : "Nenhum",
       tempo_sozinho_min: Math.round(120 + rnd() * 240), tempo_tela_min: Math.round(150 + rnd() * 220),
+      energia: esc(b), motivacao: esc(b * .9), ansiedade: esc(1 - b), sobrecarga: esc(rnd()),
+      irritabilidade: esc((1 - b) * .8), procrastinacao: esc(rnd() * .9), sensacao_controle: esc(b),
+      raiva: esc((1 - b) * .6), medo: esc((1 - b) * .7), culpa: Math.round(10 * Math.min(1, (1 - b) * .8)),
+      produtividade: esc(b), satisfacao: esc(b),
       imprevisto: rnd() < .2 ? "Imprevisto no dia" : "Nenhum", relato_livre: "Registro de exemplo."
     });
   }
@@ -490,6 +511,45 @@ function renderGraficos(d) {
     options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
       scales: { y: { min: 0, max: 5, grid: { color: gridCor } }, y1: { min: 0, max: 16, position: "right", grid: { display: false } }, x: { grid: { display: false } } } }
   });
+
+  const opt15 = { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+    scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 }, grid: { color: gridCor } }, x: { grid: { display: false } } } };
+  charts.gEmo = new Chart($("gEmo"), { type: "line", options: opt15, data: { labels, datasets: [
+    linha("Ansiedade", C.ansiedade, d.map(r => r.ansiedade ?? null)),
+    linha("Irritabilidade", C.correria, d.map(r => r.irritabilidade ?? null)),
+    linha("Raiva", C.raiva, d.map(r => r.raiva ?? null)),
+    linha("Medo", C.medo, d.map(r => r.medo ?? null)),
+    linha("Culpa (÷2)", C.culpa, d.map(r => r.culpa != null ? r.culpa / 2 : null))
+  ]}});
+  charts.gEner = new Chart($("gEner"), { type: "line", options: opt15, data: { labels, datasets: [
+    linha("Energia", C.energia, d.map(r => r.energia ?? null)),
+    linha("Motivação", C.motivacao, d.map(r => r.motivacao ?? null)),
+    linha("Controle", C.controle, d.map(r => r.sensacao_controle ?? null)),
+    linha("Produtividade", C.produt, d.map(r => r.produtividade ?? null)),
+    linha("Satisfação", C.satisf, d.map(r => r.satisfacao ?? null))
+  ]}});
+}
+
+// [emoji, nome, campo, quanto maior pior?, máximo]
+const METRICAS2 = [
+  ["🔋", "Energia", "energia", false, 5], ["🔥", "Motivação", "motivacao", false, 5],
+  ["🎛️", "Controle", "sensacao_controle", false, 5], ["✅", "Produtividade", "produtividade", false, 5],
+  ["😊", "Satisfação", "satisfacao", false, 5],
+  ["😰", "Ansiedade", "ansiedade", true, 5], ["😤", "Irritabilidade", "irritabilidade", true, 5],
+  ["😡", "Raiva", "raiva", true, 5], ["😨", "Medo", "medo", true, 5],
+  ["🥀", "Culpa", "culpa", true, 10], ["🧱", "Sobrecarga", "sobrecarga", true, 5],
+  ["⏳", "Procrastinação", "procrastinacao", true, 5]
+];
+function renderBarras2(d) {
+  const box = $("barras2"); box.textContent = "";
+  METRICAS2.forEach(([ic, nome, k, pior, max]) => {
+    const v = avg(d, k), pct = v == null ? 0 : Math.round(v / max * 100);
+    const row = el("div", "hb"); row.style.setProperty("--c", pior ? C.raiva : C.energia);
+    row.append(el("div", "ic", ic));
+    const tr = el("div", "trilho"), br = el("div", "barra"); br.append(el("span", "", `${nome} · ${fmt1(v)}/${max}`)); tr.append(br);
+    row.append(tr, el("b", "", v == null ? "–" : pct + "%")); box.append(row);
+    requestAnimationFrame(() => requestAnimationFrame(() => { br.style.width = Math.max(pct, 24) + "%"; }));
+  });
 }
 
 function renderCiclos() {
@@ -565,6 +625,7 @@ function renderDetalhe() {
   const chips = el("div", "chips"), add = (txt, cor) => { const c = el("span", "chip", txt); c.style.setProperty("--c", cor); chips.append(c); };
   [["😴 Sono", "sono_qualidade", C.sono], ["⚡ Estresse", "estresse_tarde", C.estresse], ["💧 Tristeza", "tristeza_desanimo", C.tristeza],
    ["🫂 Solidão", "solidao", C.solidao], ["🏃‍♂️ Correria", "correria", C.correria], ["🎭 Pressão", "pressao_social", C.pressao]].forEach(([n, k, c]) => { if (r[k] != null) add(`${n} ${r[k]}/5`, c); });
+  METRICAS2.forEach(([ic, nome, k, pior, max]) => { if (r[k] != null) add(`${ic} ${nome} ${r[k]}/${max}`, pior ? C.raiva : C.energia); });
   [["📖 Bíblia", "leitura_biblia"], ["🙏 Oração", "oracao_manha"], ["🏃 Treino", "exercicio_fisico"],
    ["📚 Estudo", "estudou_leu"], ["🎨 Hobby", "hobby_feito"], ["☕ Pausas", "descanso_dia"]].forEach(([n, k]) => {
     if (r[k] != null) add(`${n} ${r[k] ? "✓" : "✗"}`, r[k] ? C.sono : "rgba(255,255,255,.25)"); });
@@ -632,7 +693,7 @@ function render() {
   const d = DATA.slice(-periodo);
   $("periodo").textContent = `Últimos ${d.length} dias · ${d.filter(temRegistro).length} com registro` + (DEMO ? " · DEMO" : "");
   if (!d.some(r => r.data === selDate)) selDate = ([...d].reverse().find(temRegistro) || d[d.length - 1] || {}).data;
-  atualizarCerebro(); renderBarras(d); renderGraficos(d); renderCiclos(); renderTris(d); renderCartoes(d); renderTimeline(); renderTira(d); renderDetalhe(); renderLembretes();
+  atualizarCerebro(); renderBarras(d); renderBarras2(d); renderGraficos(d); renderCiclos(); renderTris(d); renderCartoes(d); renderTimeline(); renderTira(d); renderDetalhe(); renderLembretes();
 }
 $("toggle").addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;

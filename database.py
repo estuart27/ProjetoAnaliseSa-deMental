@@ -63,6 +63,18 @@ COLUNAS_NOVAS = {
     "pressao_social": "INTEGER CHECK (pressao_social BETWEEN 1 AND 5)",
     "estudou_leu": "INTEGER CHECK (estudou_leu IN (0, 1))",
     "hobby_feito": "INTEGER CHECK (hobby_feito IN (0, 1))",
+    "energia": "INTEGER CHECK (energia BETWEEN 1 AND 5)",
+    "motivacao": "INTEGER CHECK (motivacao BETWEEN 1 AND 5)",
+    "ansiedade": "INTEGER CHECK (ansiedade BETWEEN 1 AND 5)",
+    "sobrecarga": "INTEGER CHECK (sobrecarga BETWEEN 1 AND 5)",
+    "irritabilidade": "INTEGER CHECK (irritabilidade BETWEEN 1 AND 5)",
+    "procrastinacao": "INTEGER CHECK (procrastinacao BETWEEN 1 AND 5)",
+    "sensacao_controle": "INTEGER CHECK (sensacao_controle BETWEEN 1 AND 5)",
+    "raiva": "INTEGER CHECK (raiva BETWEEN 1 AND 5)",
+    "medo": "INTEGER CHECK (medo BETWEEN 1 AND 5)",
+    "culpa": "INTEGER CHECK (culpa BETWEEN 0 AND 10)",
+    "produtividade": "INTEGER CHECK (produtividade BETWEEN 1 AND 5)",
+    "satisfacao": "INTEGER CHECK (satisfacao BETWEEN 1 AND 5)",
 }
 WD = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
